@@ -1,0 +1,23 @@
+.page-header {
+    background-color: #ffffff;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+.home_button, .home_button:hover, .home_button:visited{
+    color: #000000; 
+    float: left; 
+    font-size: 26pt; 
+    margin-top: -30px;
+}
+.new_locker_button,.new_locker_button:hover, .new_locker_button:visited{
+    color: #000000; 
+    float: right; 
+    font-size: 26pt; 
+    margin-top: -30px; 
+    margin-left: -10px;
+}
+.logout_button, .logout_button:hover, .logout_button:visited{
+	color: #000000; 
+    float: right; 
+    font-size: 26pt;  
+}

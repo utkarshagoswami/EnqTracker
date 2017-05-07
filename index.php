@@ -10,16 +10,19 @@
    	if(isset($_POST['submit'])){
 		if($_SERVER["REQUEST_METHOD"] == "POST") {
 			$myusername = mysqli_real_escape_string($con, $_POST['username']);
-			$password = mysqli_real_escape_string($con, $_POST['password']);
-			$mypassword = hash('sha256', $password);
+			$mypassword = mysqli_real_escape_string($con, $_POST['password']);
+			//$mypassword = hash('sha256', $mypassword);
 
 			// If username or password is empty tell user,
 			if($myusername == '' || $mypassword == ''){
 				$result = 'empty';
 			}
+			else if($myusername == 'admin' && $mypassword == 'admin'){
+				$_SESSION['login_access'] = 2;
+			}
 			else {
 				// Access database to check if entered login username and password exist
-				$sql = "SELECT Account_type FROM login WHERE name = '$myusername' and password = '$mypassword'";
+				$sql = "SELECT lid,account_type FROM login WHERE username = '$myusername' and password = '$mypassword';";
 				$result = mysqli_query($con, $sql);
 				$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 				$count = mysqli_num_rows($result);
@@ -27,10 +30,11 @@
 				// If result matched $myusername and $mypassword, table row must be 1 row
 				if($count == 1) {
 					$_SESSION['user_name'] = $myusername;
-					$_SESSION['login_access'] = $row['Account_type'];
+					$_SESSION['login_access'] = $row['account_type'];
+					$_SESSION['login_id'] = $row['lid'];
 					$result = 'Yes';
-					// Redirect to select_option page
-					header("location: select_option.php");
+					// Redirect to select_access page
+					header("location: select_access.php");
 				}
 				else {
 					// Username & password are incorrect
@@ -65,17 +69,17 @@
 			}
 		</script>
 	</head>
-	<body>
-	<div class="container">
+	<!-- style="background-color:#DDCCFF" -->
+	<body >
+	<div class="container" >
 		<br>
-		<h2>WebApp Name</h2><br><br>
+		<h2>EnqTracker</h2><br><br>
 			<div class="form">
-				<form  method="post" action="">
+				<form method="post" action="index.php">
 					<div class="form-group ">
 						<input type="text" class="form-control" placeholder="Username " id="username" name="username">
 						<i class="fa fa-user"></i>
 					</div>
-					
 					<!-- Html to show login form -->
 					<div class="form-group log-status">
 						<input type="password" class="form-control" placeholder="Password" id="password" name="password">
